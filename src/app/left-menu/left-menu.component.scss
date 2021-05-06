@@ -1,0 +1,74 @@
+.left-menu {
+    position: fixed;
+    display: flex;
+    width: 55px;
+    transition: width 0.3s;
+    top: 45px;
+    background: #0b1741;
+    color: #fff;
+    height: calc(100vh - 45px);
+    padding: 0px 7px;
+    z-index: 10;
+    app-left-menu {
+        width: 100%;
+    }
+    ::ng-deep {
+        .mat-tree {
+            width: 100%;
+            .mat-tree-node,
+            .mat-nested-tree-node {
+                li {
+                    button {
+                        outline: none;
+                    }
+                    .menu-title,
+                    .expand-icon {
+                        display: none;
+                    }
+                }
+                &:focus {
+                    outline: none;
+                }
+            }
+        }
+    }
+    &:hover {
+        width: 250px;
+        z-index: 10;
+        ::ng-deep {
+            .mat-tree {
+                .mat-tree-node,
+                .mat-nested-tree-node {
+                    li {
+                        .menu-title {
+                            display: block;
+                            font-size: 13px;
+                            flex: 1;
+                        }
+                        .expand-icon {
+                            display: block;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+::ng-deep {
+    .example-tree-invisible {
+        display: none;
+    }
+    .example-tree ul,
+    .example-tree li {
+        margin-top: 0;
+        margin-bottom: 0;
+        list-style-type: none;
+        ul {
+            padding-left: 30px;
+        }
+    }
+    .mat-tree-node {
+        cursor: pointer;
+    }
+}

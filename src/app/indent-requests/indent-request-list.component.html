@@ -1,0 +1,195 @@
+<div class="page-content">
+    <div class="left-wrapper">
+        <div class="left-inner-wrapper">
+            <div class="score-area">
+                <p>My Request Score</p>
+                <div class="flex status-area">
+                    <div class="status-wrapper border-div">
+                        <span class="circle pending"></span> 10
+                        <br>
+                        <span class="status">Pending</span>
+                    </div>
+                    <div class=" status-wrapper border-div">
+                        <span class="circle approved"></span> 105
+                        <br>
+                        <span class="status">Approved</span>
+                    </div>
+                    <div class="status-wrapper">
+                        <span class="circle rejected"></span> 20
+                        <br>
+                        <span class="status">Rejected</span>
+                    </div>
+                </div>
+            </div>
+            <div class="filter-form">
+                <div class="collapse-triger" (click)="isCollapsed = !isCollapsed">
+                    <p>Search Indent Request</p>
+                    <span class="toglge-icon icon-accordian-arrow" *ngIf="!isCollapsed"></span>
+                    <span class="toglge-icon icon-dropdown-arrow" *ngIf="isCollapsed"></span>
+                </div>
+                <div class="form mt-3" *ngIf="!isCollapsed">
+                    <div class="form-group">
+                        <label class="form-label">Requested By</label>
+                        <div class="custom-search">
+                            <input class="form-control" type="text" name="" id="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Select status</label>
+                        <select class="form-control">
+                            <option value="">Select</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Filter By Nature Request</label>
+                        <select class="form-control">
+                            <option value="">Select</option>
+                        </select>
+                    </div>
+                    <div class="text-right">
+                        <button class="btn btn-link">Clear all</button>
+                        <button class="btn btn-primary">Search</button>
+                    </div>
+                </div>
+            </div>
+            <div class="filter-list" [ngClass]="isCollapsed ? 'collapsed' : ''">
+                <div class="list">
+                    <div class="card-wrapper" (click)="selectReq(item)" [ngClass]="item.selected ? 'active' : ''"
+                        *ngFor="let item of reqList">
+                        <div class="flex justify-space-between mb-2">
+                            <div class="bold">{{item.requestId}}</div>
+                            <div><span class="circle"
+                                    [ngClass]="{'pending': item.status == 'pending', 'approved': item.status == 'approved', 'rejected': item.status == 'rejected'}"></span>
+                            </div>
+                        </div>
+                        <div class="flex justify-space-between mb-2">
+                            <!-- <span class="bold">{{item.empName}}</span> -->
+                            <span class="bold">{{item.user.firstName}} {{ item.user.lastName }}</span>
+                            <span class="date">{{item.createdAt | date : "dd-MM-y"}}</span>
+                        </div>
+                        <div>
+                            <span *ngIf="item.department">{{item.department.name}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="work-area">
+        <request-details [showApproval]="showApproval"></request-details>
+    </div>
+    <div class="widget-area">
+        <div class="widget-wrapper stat-widget">
+            <div class="title flex justify-space-between">
+                <p class="mb-0 bold">Budget</p>
+                <i class="icon-more cursor"></i>
+            </div>
+            <div class="w-body">
+                <div class="flex stat-wrapper">
+                    <div class="graph"></div>
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-circle blue"></div>
+                            <div class="flex1">
+                                <p class="amount">50,00,000.00</p>
+                                <p class="desc">Overall Budget</p>
+                            </div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-circle sky-blue"></div>
+                            <div class="flex1">
+                                <p class="amount">32,97,000.00</p>
+                                <p class="desc">Available Budget</p>
+                            </div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-circle orange"></div>
+                            <div class="flex1">
+                                <p class="amount">2,00,000.00</p>
+                                <p class="desc">Estimate Request Cost</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="total-amount">
+                    <p class="mb-2 bold amount">30,97,000.00</p>
+                    <p class="desc">Post Order Amount</p>
+                </div>
+            </div>
+        </div>
+        <div class="widget-wrapper">
+            <div class="title flex justify-space-between">
+                <p class="mb-0 bold">widget</p>
+                <i class="icon-more cursor"></i>
+            </div>
+            <div class="w-body"></div>
+        </div>
+    </div>
+    <div class="timeline-area">
+        <div class="timeline-wrapper">
+            <p class="title text-center">TRACK ORDER</p>
+            <div class="timeline">
+                <div class="step completed">
+                    <div class="circle">
+                        <i class="icon-timeline-po-pending timeline-icon"></i>
+                    </div>
+                    <div class="status">Approval <br>Pending</div>
+                </div>
+                <div class="step active">
+                    <div class="circle">
+                        <i class="icon-timeline-po-pending timeline-icon"></i>
+                    </div>
+                    <div class="status">PO <br>Pending</div>
+                </div>
+                <div class="step">
+                    <div class="circle">
+                        <i class="icon-timeline-po-created timeline-icon"></i>
+                    </div>
+                    <div class="status">PO <br>Created</div>
+                </div>
+                <div class="step">
+                    <div class="circle">
+                        <i class="icon-timeline-po-approved timeline-icon"></i>
+                    </div>
+                    <div class="status">PO <br>Approved</div>
+                </div>
+                <div class="step">
+                    <div class="circle">
+                        <i class="icon-timeline-delivery timeline-icon"></i>
+                    </div>
+                    <div class="status">Delivery</div>
+                </div>
+                <div class="step">
+                    <div class="circle">
+                        <i class="icon-timeline-grn timeline-icon"></i>
+                    </div>
+                    <div class="status">GRN</div>
+                </div>
+                <div class="step">
+                    <div class="circle">
+                        <i class="icon-timeline-invoice timeline-icon"></i>
+                    </div>
+                    <div class="status">Invoice</div>
+                </div>
+                <div class="step">
+                    <div class="circle">
+                        <i class="icon-timeline-payment-Initiated timeline-icon"></i>
+                    </div>
+                    <div class="status">Payment <br>Initiated</div>
+                </div>
+                <div class="step">
+                    <div class="circle">
+                        <i class="icon-timeline-payment-confrimed timeline-icon"></i>
+                    </div>
+                    <div class="status">Payment <br>Confirmed</div>
+                </div>
+                <div class="step">
+                    <div class="circle">
+                        <i class="icon-timeline-rating timeline-icon"></i>
+                    </div>
+                    <div class="status">Rating</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

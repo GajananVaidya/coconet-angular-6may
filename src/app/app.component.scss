@@ -1,0 +1,9 @@
+.main-body-wrapper {
+    min-height: 100vh;
+    padding-top: 45px;
+
+    .work-space-wrapper {
+        padding-left: 55px;
+        min-height: calc(100vh - 45px);
+    }
+}

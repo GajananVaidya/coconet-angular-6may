@@ -1,0 +1,35 @@
+<div class="header-wrapper">
+    <div class="logo-area">
+        <img src="./../../assets/img/coconet-logo.png" alt="coconet">
+    </div>
+    <div class="right-header">
+        <div class="left-menu-trigger">
+            <span class="icon-top-nav-menu"></span>
+        </div>
+        <div class="user-info">
+            <div class="user-bullet buyer">
+                <span class="type">BUYER</span>
+                <span>></span>
+                <span class="role">SUPER ADMIN</span>
+            </div>
+        </div>
+        <div class="flex1"></div>
+        <div class="user-panel">
+            <span class="user-name-title">Hi,</span> <span *ngIf="userName" class="user-name">{{ userName }}</span>
+            <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="User">
+                <mat-icon>supervised_user_circle</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item>
+                    <mat-icon>settings</mat-icon>
+                    <span>Settings</span>
+                </button>
+                <button (click)='logout()' mat-menu-item>
+                    <mat-icon>logout</mat-icon>
+                    <span>Logout</span>
+                </button>
+            </mat-menu>
+        </div>
+    </div>
+
+</div>

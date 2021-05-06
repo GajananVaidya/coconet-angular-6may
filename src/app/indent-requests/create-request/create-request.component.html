@@ -1,0 +1,259 @@
+<div class="page-content">
+    <div class="new-request-wrapper">
+        <div class="flex">
+            <p class="page-title flex1">New Request</p>
+            <div>
+                <button type="button" class="btn btn-outline-primary">Add New Product</button>
+            </div>
+        </div>
+        <div class="req-form">
+            <div class="row">
+                <div class="col-sm-4">
+                    <label class="form-label">Product Name<span class="text-danger">*</span></label>
+                    <div class="custom-search form-control">
+                        <i class="icon-form-search"></i>
+                        <input type="text" [(ngModel)]="productName" (keyup)="onKey($event)">
+                        <span class="qty">Inv. Qty: 20</span>
+                        <i class="icon-dropdown-arrow" (click)="productNameToggle = !productNameToggle"></i>
+                        <ul class="custom-dropdown" *ngIf="productNameToggle">
+                            <!-- <li class="flex"><span class="flex1">Dell Laptop</span><span class="qty">Inv Qty:
+                                    <strong>02</strong></span></li> -->
+                            <li (click)="selectProduct(item)" class="flex" *ngFor="let item of productsData">
+                                <span class="flex1">{{ item.itemName }}</span>
+                                <span class="qty">Inv Qty: <strong>02</strong></span>
+                            </li>
+                                    
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-sm-4 pl-0">
+                    <div class="row">
+                        <div class="col-sm-6 pr-0">
+                            <label class="form-label">Unit Of Measurement<span class="text-danger">*</span></label>
+                            <select #mySelect class="form-control" (change)="getUOMname(mySelect.value)">
+                                <!-- <option>NOS</option> -->
+                                <option  [value]="item._id" *ngFor="let item of UOMData">
+                                    {{ item.name }}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="form-label">Indent Qty<span class="text-danger">*</span></label>
+                            <input type="text" [(ngModel)]="indentQty" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="row">
+                        <div class="col-sm-6 pl-0">
+                            <label class="form-label">Budget Amt</label>
+                            <input type="text" [(ngModel)]="budgetAmt" class="form-control">
+                        </div>
+                        <div class="col-sm-6 pl-0">
+                            <label class="form-label">Delivery By</label>
+                            <input type="date" [(ngModel)]="deliverBy" class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-sm-8">
+                    <label class="form-label">Description</label>
+                    <textarea [(ngModel)]="description" class="form-control"></textarea>
+                </div>
+                <div class="col-sm-4 flex align-center pt-4">
+                    <div class="flex1">
+                        <label class="form-label cursor"><i class="icon-upload"></i>RFQ Document</label>
+                    </div>
+                    <div>
+                        <button type="button" (click)="addProduct()" class="btn btn-primary"> 
+                            <i class="icon-more-arrow"></i> Add Product</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bottom-area">
+            <div class="product-table">
+                <div class="title-area">
+                    <div class="flex">
+                        <p class="title">Added Products</p>
+                        <span class="ml-3 mr-3">|</span>
+                        <p class="link bold">Total 2 product items added</p>
+                    </div>
+                    <div>
+
+                    </div>
+                </div>
+                <table class="table custom-table product-table">
+                    <thead>
+                        <tr>
+                            <th class="text-center" width="50px"><input type="checkbox"></th>
+                            <th>Product</th>
+                            <th width="100px">Unit</th>
+                            <th width="100px">Ind. Qty.</th>
+                            <th width="120px">Budget</th>
+                            <th width="120px">Delivery By</th>
+                            <th width="70px"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of allProductData">
+                            <td class="text-center"><input type="checkbox"></td>
+                            <td>{{ item.product.itemName }}</td>
+                            <td>{{ item.uom.name }}</td>
+                            <td>{{ item.reqQty }}</td>
+                            <td>{{ item.budgetAmt }}</td>
+                            <td>{{ item.deliverBy }}</td>
+                            <td class="icons">
+                                <i class="icon-edit mr-3"></i>
+                                <i class="icon-delete"></i>
+                            </td>
+                        </tr>
+                        <!-- <tr>
+                            <td class="text-center"><input type="checkbox"></td>
+                            <td>Dell Laptop</td>
+                            <td>NOS</td>
+                            <td>1</td>
+                            <td>20000</td>
+                            <td>Dec 09, 2020</td>
+                            <td class="icons">
+                                <i class="icon-edit mr-3"></i>
+                                <i class="icon-delete"></i>
+                            </td>
+                        </tr> -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="other-details">
+                <p class="title">Othere Details</p>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label class="form-label">Reason For Request<span class="text-danger">*</span></label>
+                        <textarea [(ngModel)]="reason" class="form-control"></textarea>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="form-label">Deliver At<span class="text-danger">*</span></label>
+                            <div class="custom-search form-control">
+                                <i class="icon-form-search"></i>
+                                <input type="text" [(ngModel)]="deliveryAddress" (keyup)="onKeyDelivery($event)">
+                                <i class="icon-dropdown-arrow" (click)="deliverAtToggle = !deliverAtToggle"></i>
+
+                                <ul class="custom-dropdown" *ngIf="deliverAtToggle">
+                                    <li (click)="selectDelivery(item)" class="flex" *ngFor="let item of addressData">
+                                        <span class="flex1">{{ item.type }}, {{ item.address1 }}, {{ item.address2 }}, {{ item.city }}, {{ item.pincode }}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <label class="form-label">Required In(Days)<span class="text-danger">*</span></label>
+                                <div class="custom-search form-control">
+                                    <i class="icon-form-search"></i>
+                                    <input type="text" [(ngModel)]="requiredIn" (keyup)="onKeyRequiredIn($event)">
+                                    <span class="qty">Day(s)</span>
+                                    <i class="icon-dropdown-arrow" (click)="requiredInToggle = !requiredInToggle"></i>
+
+                                    <ul class="custom-dropdown" *ngIf="requiredInToggle">
+                                        <li (click)="selectRequired(item)" class="flex" *ngFor="let item of requiredInData">
+                                            <span class="flex1">{{ item.value }}</span>
+                                        </li>
+                                    </ul>
+
+                                </div>
+                            </div>
+                            <div class="col-sm-7">
+                                <label class="form-label">Department</label>
+                                <select class="form-control" [(ngModel)]="department">
+                                    <!-- <option>Computer</option> -->
+                                    <option [value]="item._id" *ngFor="let item of departmentData">
+                                        {{ item.name }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-4">
+                    <div class="col-sm-12 text-right">
+                        <button type="button" (click)="raiseRequest()" class="btn btn-primary">Raise Your Request</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="widget-area">
+        <div class="widget-wrapper approver-widget">
+            <div class="w-body">
+                <div class="flex top-area">
+                    <div>
+                        <img class="user-image" src="../../../assets/img/user.jpg" alt="">
+                    </div>
+                    <div>
+                        <p class="link mb-2 bold">Request Approver Name</p>
+                        <p class="name bold mb-0">Robert Edwards</p>
+                        <p class="role">Super Admin</p>
+                    </div>
+                </div>
+                <div class="req-score">
+                    <p class="title">REQUEST SCORE</p>
+                    <div class="flex justify-center">
+                        <div class="text-center">
+                            <p class="pending bold mb-2">10</p>
+                            <p class="mb-0 status">Pending</p>
+                        </div>
+                        <div class="text-center ml-3 mr-3">
+                            <p class="approved bold mb-2">105</p>
+                            <p class="mb-0 status">Approved</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="rejected bold mb-2">10</p>
+                            <p class="mb-0 status">Rejected</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="widget-wrapper stat-widget">
+            <div class="title flex justify-space-between">
+                <p class="mb-0 bold">Budget</p>
+                <i class="icon-more cursor"></i>
+            </div>
+            <div class="w-body">
+                <div class="flex stat-wrapper">
+                    <div class="graph"></div>
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-circle blue"></div>
+                            <div class="flex1">
+                                <p class="amount">50,00,000.00</p>
+                                <p class="desc">Overall Budget</p>
+                            </div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-circle sky-blue"></div>
+                            <div class="flex1">
+                                <p class="amount">32,97,000.00</p>
+                                <p class="desc">Available Budget</p>
+                            </div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-circle orange"></div>
+                            <div class="flex1">
+                                <p class="amount">2,00,000.00</p>
+                                <p class="desc">Estimate Request Cost</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="total-amount">
+                    <p class="mb-2 bold amount">30,97,000.00</p>
+                    <p class="desc">Post Order Amount</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <app-chat-application></app-chat-application>
+</div>

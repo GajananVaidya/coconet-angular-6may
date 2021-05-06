@@ -1,0 +1,123 @@
+<div *ngIf="selectedIndentRequest;else loader;" class="request-details-container">
+    <div class="title">Request Details</div>
+    <div class="info-wrapper">
+        <div class="top flex">
+            <div>
+                <div>
+                    <div class="form-label mb-2">Req. Code</div>
+                </div>
+                <div class="req-code">{{selectedIndentRequest.requestId}}</div>
+            </div>
+            <div>
+                <div class="form-label mb-2">Name (Emp Code)</div>
+                <div class="flex">
+                    <span class="avtar"></span>
+                    <span *ngIf="selectedIndentRequest.user" class="bold">{{selectedIndentRequest.user.firstName}} ({{selectedIndentRequest.user.lastName}})</span>
+                </div>
+            </div>
+            <div>
+                <div class="flex justify-center">
+                    <span class="status mb-2"
+                        [ngClass]="{'pending': selectedIndentRequest.status == 'pending', 'approved': selectedIndentRequest.status == 'approved', 'rejected': selectedIndentRequest.status == 'rejected'}">{{selectedIndentRequest.status}}</span>
+                </div>
+                <span class="form-label">{{selectedIndentRequest.createdAt | date : "dd-MM-y hh:mm" }}</span>
+            </div>
+        </div>
+        <div class="bottom flex">
+            <div>
+                <div class="form-label mb-2">Reason of Req.</div>
+                <div class="bold">{{selectedIndentRequest.reason}}</div>
+            </div>
+            <div>
+                <div class="form-label mb-2">Department</div>
+                <div class="bold">{{selectedIndentRequest.department.name}}</div>
+            </div>
+            <div>
+                <div class="form-label mb-2">Nature of Request</div>
+                <div class="bold">{{selectedIndentRequest.natureOfReq}}</div>
+            </div>
+            <div>
+                <div class="form-label mb-2">TAT</div>
+                <div class="bold">{{selectedIndentRequest.natureOfReq}}</div>
+            </div>
+        </div>
+    </div>
+    <div class="main-page">
+        <p class="title">Product Ordered List({{selectedIndentRequest.products.length}})</p>
+        <div class="mb-5">
+            <table class="table custom-table product-table">
+                <thead>
+                    <tr>
+                        <th>Product Name</th>
+                        <th>UOM</th>
+                        <th>Indent Qty.</th>
+                        <th>Approved Qty.</th>
+                        <th>Doc</th>
+                        <th>Estimate Rate</th>
+                        <th>Estimate Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of selectedIndentRequest.products">
+                        <td class="bold">{{item.product.itemName}}<i class="icon-more-info ml-2"
+                                (click)="showInfo($event)"></i>
+                        </td>
+                        <td>{{item.uom.name}}</td>
+                        <td>{{item.reqQty}}</td>
+                        <td><input *ngIf="showApproval" type="text" [(ngModel)]="item.approvedQty">
+                            <span *ngIf="!showApproval">{{ item.approvedQty }}</span>
+                        </td>
+                        <td><i class="icon-doc"></i></td>
+                        <td class="bold">{{item.budgetAmt}}</td>
+                        <td class="bold">{{item.budgetAmt}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="desc-tooltip arrow_box" id="desc-tooltip1" [ngClass]="isInfo ? 'show' : ''">
+                <div class="p-3">
+                    <div class="flex">
+                        <p class="flex1 bold">Product Description</p>
+                        <div>
+                            <i class="icon-close cursor" (click)="isInfo = false"></i>
+                        </div>
+                    </div>
+                    <div class="body-text">
+                        - Core i7 <br>
+                        - 1TB Hard-disk <br>
+                        - 8BG RAM
+                    </div>
+                </div>
+                <hr class="m-0">
+                <div class="p-3">
+                    Balance Qty. in inventory <span class="text-blue">2</span>
+                </div>
+            </div>
+
+        </div>
+        <div *ngIf="showApproval" class="comment-form flex">
+            <div class="flex1 mr-4">
+                <div class="flex mb-3">
+                    <div class="status-block approve mr-3 " [ngClass]="reqStatus == 'approve' ? 'active' : ''"
+                        (click)="reqStatus = 'approve'">
+                        <i class="icon-approve-tick mr-3"></i>
+                        <span class="blank-circle mr-3"></span>
+                        <div>Approve</div>
+                    </div>
+                    <div class="status-block reject ml-3" [ngClass]="reqStatus == 'reject' ? 'active' : ''"
+                        (click)="reqStatus = 'reject'">
+                        <i class="icon-close mr-3"></i>
+                        <span class="blank-circle mr-3"></span>
+                        <div>Reject</div>
+                    </div>
+                </div>
+                <textarea class="form-control" [(ngModel)]="comments" placeholder="Add Your Comment" rows="3"></textarea>
+            </div>
+            <div class="submit-area">
+                <button type="button" (click)="submitComment()" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+<ng-template #loader>
+    <mat-spinner style="margin:0 auto;"></mat-spinner>
+</ng-template>

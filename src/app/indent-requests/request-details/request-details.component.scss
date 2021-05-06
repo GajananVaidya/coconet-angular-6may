@@ -1,0 +1,180 @@
+.title {
+    font-size: 15px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+.product-table {
+    .icon-more-info {
+        color: #4a9afb;
+        cursor: pointer;
+    }
+    .icon-doc {
+        cursor: pointer;
+        color: #4a9afb;
+        font-size: 20px;
+    }
+}
+.info-wrapper {
+    background-color: #f1f9fc;
+    background-image: url("../../../assets/img/rhs-details-bg.png");
+    border: 1px solid #dae9f0;
+    border-radius: 5px;
+    margin-bottom: 25px;
+    background-repeat: no-repeat;
+    background-position: right bottom;
+    .top {
+        padding: 15px;
+        border-bottom: 1px solid #dce5ea;
+        justify-content: space-between;
+        .req-code {
+            border: 2px solid #3db0f1;
+            text-align: center;
+            padding: 5px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .status {
+            text-align: center;
+            font-weight: bold;
+            padding: 5px;
+            font-size: 11px;
+            font-size: 11px;
+            display: inline-block;
+            border-radius: 5px;
+            text-transform: uppercase;
+            &.pending {
+                border: 2px solid #fe9e52;
+                background: #fee8d3;
+                color: #fe9e52;
+            }
+            &.approved {
+                border: 2px solid #4fc558;
+                background: #d5fad8;
+                color: #4fc558;
+            }
+            &.rejected {
+                border: 2px solid #fe6865;
+                background: #ffd0d2;
+                color: #fe6865;
+            }
+        }
+    }
+    .bottom {
+        padding: 15px;
+        justify-content: space-between;
+    }
+}
+.desc-tooltip {
+    border-radius: 3px;
+    position: absolute;
+    width: 250px;
+    height: auto;
+    box-shadow: 0px 2px 7px #ddd;
+    display: none;
+    &.show {
+        display: block;
+    }
+    .icon-close {
+        color: #78808b;
+        font-size: 15px;
+    }
+    .body-text {
+        color: #78808b;
+        line-height: 20px;
+    }
+    .text-blue {
+        color: #609ffc;
+    }
+}
+
+.arrow_box {
+    background: #f7faff;
+    border: 1px solid #0270fb;
+    &::after,
+    &::before {
+        right: 100%;
+        top: 20%;
+        border: solid transparent;
+        content: "";
+        height: 0;
+        width: 0;
+        position: absolute;
+        pointer-events: none;
+    }
+    &::after {
+        border-color: rgba(247, 250, 255, 0);
+        border-right-color: #f7faff;
+        border-width: 8px;
+        margin-top: -8px;
+    }
+    &::before {
+        border-color: rgba(2, 112, 251, 0);
+        border-right-color: #0270fb;
+        border-width: 9px;
+        margin-top: -9px;
+    }
+}
+
+.product-table {
+    .icon-more-info {
+        color: #4a9afb;
+        cursor: pointer;
+    }
+    .icon-doc {
+        cursor: pointer;
+        color: #4a9afb;
+        font-size: 20px;
+    }
+}
+.comment-form {
+    box-shadow: 0px 0px 10px #ddd;
+    padding: 15px;
+    .status-block {
+        border: 1px solid #a3afbf;
+        padding: 10px;
+        flex: 1;
+        border-radius: 5px;
+        text-align: center;
+        cursor: pointer;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        i {
+            font-size: 20px;
+            display: none;
+        }
+        .blank-circle {
+            border: 1px solid #a3afbf;
+            border-radius: 30px;
+            width: 20px;
+            height: 20px;
+        }
+        &.approve.active {
+            color: #fff;
+            background: #62ca6b;
+            border: 1px solid #62ca6b;
+            .blank-circle {
+                display: none;
+            }
+            i {
+                display: inline-block;
+            }
+        }
+        &.reject.active {
+            color: #fff;
+            background: #ff3b3c;
+            border: 1px solid #ff3b3c;
+            .blank-circle {
+                display: none;
+            }
+            i {
+                display: inline-block;
+            }
+        }
+    }
+    .submit-area {
+        display: flex;
+        align-items: flex-end;
+    }
+}

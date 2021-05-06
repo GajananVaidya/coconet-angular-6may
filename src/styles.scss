@@ -1,0 +1,221 @@
+@import "./shared.scss";
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font: normal 13px "Inter", sans-serif;
+}
+
+.flex {
+    display: flex;
+}
+.flex1 {
+    flex: 1;
+}
+.justify-space-between {
+    justify-content: space-between;
+}
+.justify-center {
+    justify-content: center;
+}
+.align-center {
+    align-items: center;
+}
+.cursor {
+    cursor: pointer;
+}
+.bold {
+    font-weight: bold;
+}
+.form-group {
+    margin-bottom: 15px;
+}
+.form-label {
+    color: #616b77;
+}
+.link {
+    color: #4588f9;
+}
+input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+}
+.custom-table {
+    input[type="text"] {
+        height: 25px;
+        width: 100px;
+        border: 1px solid #ccc;
+        padding: 0 10px;
+    }
+    th {
+        color: #76808b;
+        border-top: none;
+    }
+}
+
+.mat-tree {
+    background: transparent;
+    .mat-tree-node,
+    .mat-nested-tree-node {
+        color: white;
+    }
+}
+input[type="date"] {
+    padding-right: 0px;
+    &::-webkit-calendar-picker-indicator {
+        color: rgb(120, 128, 139);
+        opacity: 1;
+        display: block;
+        background: url(./assets/img/form-calendar.png) no-repeat;
+        width: 17px;
+        height: 17px;
+        margin-left: 0px;
+        margin-right: 5px;
+        border-width: thin;
+    }
+}
+
+//widget css
+.widget-area {
+    .widget-wrapper {
+        background: #fff;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        min-height: 150px;
+        .title {
+            padding: 10px;
+        }
+    }
+}
+.stat-widget {
+    .stat-wrapper {
+        padding: 0px 10px;
+        .graph {
+            width: 130px;
+        }
+        .stats {
+            .stat {
+                display: flex;
+                .stat-circle {
+                    width: 10px;
+                    height: 10px;
+                    border-radius: 10px;
+                    margin-right: 5px;
+                    margin-top: 2px;
+                    &.blue {
+                        border: 2px solid #6d3eff;
+                    }
+                    &.sky-blue {
+                        border: 2px solid #3db0ef;
+                    }
+                    &.orange {
+                        border: 2px solid #fe9069;
+                    }
+                }
+                .amount {
+                    margin: 0;
+                    font-size: 12px;
+                    font-weight: bold;
+                }
+                .desc {
+                    font-size: 11px;
+                    color: #78808b;
+                }
+            }
+        }
+    }
+    .total-amount {
+        background: #f9fafc;
+        text-align: center;
+        padding: 13px;
+        border-radius: 0px 0px 10px 10px;
+        .amount {
+            font-size: 17px;
+        }
+        .desc {
+            font-size: 11px;
+            color: #78808b;
+            margin: 0px;
+        }
+    }
+}
+.approver-widget {
+    .top-area {
+        padding: 15px;
+    }
+    .user-image {
+        width: 50px;
+        height: auto;
+        margin-right: 15px;
+        border-radius: 45px;
+    }
+    .link {
+        font-size: 11px;
+    }
+    .role {
+        font-size: 12px;
+        color: #777f8a;
+    }
+    .req-score {
+        background: #fff9f3;
+        padding: 15px;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+        .title {
+            text-align: center;
+            padding: 0;
+            color: #77818b;
+            font-weight: 500;
+            letter-spacing: 4px;
+            font-size: 11px;
+        }
+        .pending {
+            color: #ff891e;
+        }
+        .approved {
+            color: #46c051;
+        }
+        .rejected {
+            color: #ff3d3d;
+        }
+        .status {
+            color: #78808d;
+        }
+    }
+}
+
+.chat-wrapper {
+    position: fixed;
+    bottom: 20px;
+    right: 40px;
+    z-index: 10;
+    cursor: pointer;
+    .left {
+        background: #fff;
+        border: 1px solid #ff724a;
+        color: #ff724a;
+        border-radius: 20px;
+        padding: 5px 20px 5px 10px;
+    }
+    .right {
+        background: rgb(254, 137, 34);
+        background: linear-gradient(90deg, rgba(254, 137, 34, 1) 0%, rgba(255, 103, 98, 1) 100%);
+        border-radius: 30px;
+        display: flex;
+        width: 38px;
+        height: 38px;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: -5px;
+        right: -19px;
+        .icon-chat-message {
+            font-size: 20px;
+            color: #fff;
+        }
+    }
+}
+
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";

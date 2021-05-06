@@ -1,0 +1,12 @@
+.login-form {
+    width: 500px;
+    margin: auto;
+    margin-top: 10%;
+    .mat-form-field {
+        width: 100%;
+    }
+    .button {
+        display: flex;
+        justify-content: space-between;
+    }
+}

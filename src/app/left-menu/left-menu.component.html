@@ -1,0 +1,35 @@
+<div class="left-menu">
+  <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="example-tree">
+    <!-- This is the tree node template for leaf nodes -->
+    <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle>
+      <li class="mat-tree-node" [routerLink]="node.path" [queryParams]="node.queryParams">
+        <!-- use a disabled button to provide padding for tree leaf -->
+        <button [routerLink]="node.path" [queryParams]="node.queryParams" mat-icon-button matTreeNodeToggle
+          [attr.aria-label]="'Toggle ' + node.name">
+          <mat-icon>{{node.icon}}</mat-icon>
+        </button>
+        <span class="menu-title">{{node.name}}</span>
+
+      </li>
+    </mat-tree-node>
+    <!-- This is the tree node template for expandable nodes -->
+    <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild">
+      <li>
+        <div matTreeNodeToggle class="mat-tree-node">
+          <button mat-icon-button [attr.aria-label]="'Toggle ' + node.name">
+            <mat-icon>{{node.icon}}</mat-icon>
+          </button>
+          <span class="menu-title">{{node.name}}</span>
+          <button class="expand-icon" mat-icon-button [attr.aria-label]="'Toggle ' + node.name">
+            <mat-icon>
+              {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+            </mat-icon>
+          </button>
+        </div>
+        <ul [class.example-tree-invisible]="!treeControl.isExpanded(node)">
+          <ng-container matTreeNodeOutlet></ng-container>
+        </ul>
+      </li>
+    </mat-nested-tree-node>
+  </mat-tree>
+</div>
