@@ -1,7 +1,7 @@
-import { Component, Input } from '@angular/core';
-import { IndentRequest } from '../types';
+import { Component, Input, ViewChild } from '@angular/core';
 import { RequestDetailsService } from '../request-details.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ModalManager } from 'ngb-modal';
 
 @Component({
   selector: 'request-details',
@@ -11,13 +11,22 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class RequestDetailsComponent {
   // @Input() selectedIndentRequest: IndentRequest;
   @Input() showApproval;
+  @Input() showBid;
   reqStatus = "approve";
   loading = true;
   isInfo = false;
   comments: any;
   selectedIndentRequest : any;
   reqId: any;
-  constructor(private requestDetailsService: RequestDetailsService, private route: ActivatedRoute, private router: Router) { }
+  @ViewChild('myModal') myModal;
+  @ViewChild('fileModal') fileModal;
+  private modalRef;
+  showValue1='show active';showValue2='hide';showValue3='hide';showValue4='hide';showValue5='hide';showValue6='hide';showValue7='hide';
+  showActive1='active'; showActive2='';showActive3='';showActive4='';showActive5='';showActive6='';showActive7='';
+  isLocationInfo=false;
+  modalRef1: any;
+  constructor(private requestDetailsService: RequestDetailsService, private route: ActivatedRoute, private router: Router,
+    private modalService: ModalManager) { }
   showInfo(event: MouseEvent) {
     this.isInfo = true;
     let left = event.pageX + 15;
@@ -84,4 +93,153 @@ export class RequestDetailsComponent {
       })
     }
   }
+
+  openBidModal(){
+    this.modalRef = this.modalService.open(this.myModal, {
+      size: "xl",
+      modalClass: 'mymodal',
+      hideCloseButton: false,
+      centered: false,
+      backdrop: true,
+      animation: true,
+      keyboard: false,
+      closeOnOutsideClick: true,
+      backdropClass: "modal-backdrop"
+    });
+  }
+
+  openFileModal(){
+    this.modalRef1 = this.modalService.open(this.fileModal, {
+      size: "md",
+      modalClass: 'fileModal',
+      hideCloseButton: false,
+      centered: false,
+      backdrop: true,
+      animation: true,
+      keyboard: false,
+      closeOnOutsideClick: true,
+      backdropClass: "modal-backdrop"
+    });
+  }
+
+  closeModal(){
+    this.modalService.close(this.modalRef);
+  }
+
+  showLocation(){
+    this.isLocationInfo=true;
+  }
+
+  openTab(id){
+    if(id==1){
+      this.showValue1= 'show active';
+      this.showValue2= 'hide';
+      this.showValue3= 'hide';
+      this.showValue4= 'hide';
+      this.showValue5= 'hide';
+      this.showValue6= 'hide';
+      this.showValue7= 'hide';
+      this.showActive1='active';
+      this.showActive2='';
+      this.showActive3='';
+      this.showActive4='';
+      this.showActive5='';
+      this.showActive6='';
+      this.showActive7='';
+    }else if(id==2){
+      this.showValue1= 'hide';
+      this.showValue2= 'show active';
+      this.showValue3= 'hide';
+      this.showValue4= 'hide';
+      this.showValue5= 'hide';
+      this.showValue6= 'hide';
+      this.showValue7= 'hide';
+      this.showActive1='';
+      this.showActive2='active';
+      this.showActive3='';
+      this.showActive4='';
+      this.showActive5='';
+      this.showActive6='';
+      this.showActive7='';
+    }else if(id==3){
+      this.showValue1= 'hide';
+      this.showValue2= 'hide';
+      this.showValue3= 'show active';
+      this.showValue4= 'hide';
+      this.showValue5= 'hide';
+      this.showValue6= 'hide';
+      this.showValue7= 'hide';
+      this.showActive1='';
+      this.showActive2='';
+      this.showActive3='active';
+      this.showActive4='';
+      this.showActive5='';
+      this.showActive6='';
+      this.showActive7='';
+    }else if(id==4){
+      this.showValue1= 'hide';
+      this.showValue2= 'hide';
+      this.showValue3= 'hide';
+      this.showValue4= 'show active';
+      this.showValue5= 'hide';
+      this.showValue6= 'hide';
+      this.showValue7= 'hide';
+      this.showActive1='';
+      this.showActive2='';
+      this.showActive3='';
+      this.showActive4='active';
+      this.showActive5='';
+      this.showActive6='';
+      this.showActive7='';
+    }else if(id==5){
+      this.showValue1= 'hide';
+      this.showValue2= 'hide';
+      this.showValue3= 'hide';
+      this.showValue4= 'hide';
+      this.showValue5= 'show active';
+      this.showValue6= 'hide';
+      this.showValue7= 'hide';
+      this.showActive1='';
+      this.showActive2='';
+      this.showActive3='';
+      this.showActive4='';
+      this.showActive5='active';
+      this.showActive6='';
+      this.showActive7='';
+    }else if(id==6){
+      this.showValue1= 'hide';
+      this.showValue2= 'hide';
+      this.showValue3= 'hide';
+      this.showValue4= 'hide';
+      this.showValue5= 'hide';
+      this.showValue6= 'show active';
+      this.showValue7= 'hide';
+      this.showActive1='';
+      this.showActive2='';
+      this.showActive3='';
+      this.showActive4='';
+      this.showActive5='';
+      this.showActive6='active';
+      this.showActive7='';
+    }else if(id==7){
+      this.showValue1= 'hide';
+      this.showValue2= 'hide';
+      this.showValue3= 'hide';
+      this.showValue4= 'hide';
+      this.showValue5= 'hide';
+      this.showValue6= 'hide';
+      this.showValue7= 'show active';
+      this.showActive1='';
+      this.showActive2='';
+      this.showActive3='';
+      this.showActive4='';
+      this.showActive5='';
+      this.showActive6='';
+      this.showActive7='active';
+    }
+    
+  }
+
+
+
 }

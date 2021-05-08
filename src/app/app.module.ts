@@ -16,6 +16,7 @@ import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoginFormComponent } from './login';
 import { HttpClientModule } from '@angular/common/http';
+import { ModalModule } from 'ngb-modal';
 
 const CommonModules = [
   MatButtonModule,
@@ -26,7 +27,8 @@ const CommonModules = [
   FormsModule,
   ReactiveFormsModule,
   MatFormFieldModule,
-  BrowserAnimationsModule
+  BrowserAnimationsModule,
+  ModalModule 
 ]
 @NgModule({
   declarations: [

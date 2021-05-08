@@ -37,7 +37,7 @@
                     <div class="form-group">
                         <label class="form-label">Select status</label>
                         <select class="form-control">
-                            <option value="">Select</option>
+                            <option value="">Select Status</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -76,53 +76,96 @@
         </div>
     </div>
     <div class="work-area">
-        <request-details [showApproval]="showApproval"></request-details>
+        <request-details [showApproval]="showApproval" [showBid]="showBid"></request-details>
     </div>
     <div class="widget-area">
-        <div class="widget-wrapper stat-widget">
+        <div class="widget-wrapper">
             <div class="title flex justify-space-between">
-                <p class="mb-0 bold">Budget</p>
-                <i class="icon-more cursor"></i>
+                <p class="mb-0 bold">Approver Details</p>
             </div>
-            <div class="w-body">
-                <div class="flex stat-wrapper">
-                    <div class="graph"></div>
-                    <div class="stats">
-                        <div class="stat">
-                            <div class="stat-circle blue"></div>
-                            <div class="flex1">
-                                <p class="amount">50,00,000.00</p>
-                                <p class="desc">Overall Budget</p>
-                            </div>
-                        </div>
-                        <div class="stat">
-                            <div class="stat-circle sky-blue"></div>
-                            <div class="flex1">
-                                <p class="amount">32,97,000.00</p>
-                                <p class="desc">Available Budget</p>
-                            </div>
-                        </div>
-                        <div class="stat">
-                            <div class="stat-circle orange"></div>
-                            <div class="flex1">
-                                <p class="amount">2,00,000.00</p>
-                                <p class="desc">Estimate Request Cost</p>
-                            </div>
-                        </div>
+            <div class="w-body p-3">
+                <div class="d-flex">
+                    <div class="p-2"><img class="user-image rounded-circle" src="./assets/img/user.jpg"></div>
+                    <div class="p-2">
+                        <h6><b>Sojwal Patil</b></h6>
+                        <span class="user-small-text">Dept.User</span>
                     </div>
                 </div>
-                <div class="total-amount">
-                    <p class="mb-2 bold amount">30,97,000.00</p>
-                    <p class="desc">Post Order Amount</p>
+                <hr style="margin-top: 0.5rem; margin-bottom: 0.5rem;"/>
+                <div class="d-flex">
+                    <div class="p-2"><img src="./assets/img/email-icon.png"></div>
+                    <div class="p-2">
+                        <span class="user-small-text">sojwal@coconet.com</span>
+                    </div>
+                </div>
+                <div class="d-flex">
+                    <div class="p-2"><img src="./assets/img/phone.png"></div>
+                    <div class="p-2">
+                        <span class="user-small-text">+ 91 9876765433</span>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="widget-wrapper">
             <div class="title flex justify-space-between">
-                <p class="mb-0 bold">widget</p>
-                <i class="icon-more cursor"></i>
+                <p class="mb-0 bold">Purchase Orders</p>
+                <span class="purchaseNo text-center">2</span>
             </div>
-            <div class="w-body"></div>
+            <div class="w-body">
+                <div class="d-flex flex-row bd-highlight">
+                    <div class="bd-highlight chip p-2">#23</div>
+                    <div class="bd-highlight p-0 ml-auto">
+                        <div class="d-flex flex-column">
+                            <div class="user-small-text p-1">19-Dec-2020</div>
+                            <div class="user-title-text p-1 primarytext">Sent to seller </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex flex-column">
+                    <div class="user-small-text p-1">Vendor</div>
+                    <div class="user-title-text p-1"> Diamond Stationary </div>
+                </div>
+                <div class="d-flex flex-column">
+                    <div class="user-small-text p-1">Request By</div>
+                    <div class="user-title-text p-1">Virendra Patil</div>
+                </div>
+                <hr style="margin-top: 0.5rem; margin-bottom: 0.5rem;"/>
+                <div class="d-flex justify-content-end">
+                    <div class="user-small-text p-2">View All</div>
+                </div>
+            </div>
+        </div>
+        <div class="widget-wrapper">
+            <div class="title flex justify-space-between">
+                <p class="mb-0 bold">Bid Details</p>
+            </div>
+            <div class="w-body">
+                <div class="p-2">
+                    <div class="d-flex flex-column">
+                        <div class="user-title-text p-1">Desktop</div>
+                        <div class="user-small-text p-1">
+                            <div class="d-flex">
+                                <div class="p-1">Received bid from sellers</div>
+                                <div class="p-1 primarytext"> 2</div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr style="margin-top: 0.5rem; margin-bottom: 0.5rem;"/>
+                    <div class="d-flex flex-column">
+                        <div class="user-title-text p-1">Laptop</div>
+                        <div class="user-small-text p-1">
+                            <div class="d-flex">
+                                <div class="p-1">Received bid from sellers</div>
+                                <div class="p-1 primarytext"> 3</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr style="margin-top: 0.5rem; margin-bottom: 0.5rem;"/>
+                <div class="d-flex justify-content-end">
+                    <div class="user-small-text p-2">View All</div>
+                </div>
+            </div>
         </div>
     </div>
     <div class="timeline-area">

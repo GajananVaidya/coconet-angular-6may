@@ -11,6 +11,7 @@ import { IndentRequest } from '../types';
 export class ApprovedIndentComponent {
   isCollapsed = false;
   showApproval = false;
+  showBid = true;
   reqList: any;
   selectedReq: IndentRequest;
   reqId: any;

@@ -10,6 +10,7 @@ import { RequestDetailsService } from './request-details.service';
 import { ForApprovalComponent } from './for-approval/for-approval.component';
 import { ApprovedIndentComponent } from './approved-indent/approved-indent.component';
 import { RejectedIndentComponent } from './rejected-indent/rejected-indent.component';
+import { ModalModule } from 'ngb-modal';
 
 @NgModule({
     declarations: [IndentRequestListComponent, 
@@ -23,7 +24,7 @@ import { RejectedIndentComponent } from './rejected-indent/rejected-indent.compo
     imports: [
         FormsModule,
         IndentRequestRoutingModule,
-        CommonModule
+        CommonModule,ModalModule
     ],
     providers: [RequestDetailsService],
 })
