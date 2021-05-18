@@ -17,7 +17,7 @@
                 <div class="form-label mb-2">Name (Emp Code)</div>
                 <div class="flex">
                     <span class="avtar"></span>
-                    <span *ngIf="selectedIndentRequest.user" class="bold">{{selectedIndentRequest.user.firstName}} ({{selectedIndentRequest.user.lastName}})</span>
+                    <span *ngIf="selectedIndentRequest.user" class="bold">{{selectedIndentRequest.user.firstName}} {{selectedIndentRequest.user.lastName}}</span>
                 </div>
             </div>
             <div>
@@ -151,7 +151,7 @@
         <h5><b>Indent Request Send to Vendors</b></h5>
     </modal-header>
     <modal-content>
-       <div class="row">
+       <div *ngIf="selectedIndentRequest" class="row">
             <div class="col-md-8">
                 <table class="table custom-table product-table">
                     <thead>
@@ -164,48 +164,32 @@
                             <th>Bal Qty.</th>
                         </tr>
                     </thead>
+
                     <tbody style="overflow-y: scroll;">
-                        <tr>
-                            <td>
+                        <tr *ngFor="let item of selectedIndentRequest.products" style="overflow-y: scroll;">
+                            <td *ngIf="showBid">
                                 <input type="checkbox">
                             </td>
-                            <td class="bold">Laptop<i class="icon-more-info ml-2"></i>
+                            <td class="bold">{{item.product.itemName}}<i class="icon-more-info ml-2"
+                                    (click)="showInfo($event)"></i>
                             </td>
-                            <td>NOS</td>
-                            <td>2</td>
-                            <td>0 </td>
-                            <td>2</td> 
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkbox">
+                            <td>{{item.uom.name}}</td>
+                            <td *ngIf="!showBid">{{item.reqQty}}</td>
+                            <td><input *ngIf="showApproval" type="text" [(ngModel)]="item.approvedQty">
+                                <span *ngIf="!showApproval">{{ item.approvedQty }}</span>
                             </td>
-                            <td class="bold">LG Mobile<i class="icon-more-info ml-2"></i>
-                            </td>
-                            <td>NOS</td>
-                            <td>2</td>
-                            <td>0 </td>
-                            <td>2</td> 
-                        </tr>
-                        <tr>
-                            <td>
-                                <input type="checkbox">
-                            </td>
-                            <td class="bold">Dell Laptop<i class="icon-more-info ml-2"></i>
-                            </td>
-                            <td>NOS</td>
-                            <td>2</td>
-                            <td>0 </td>
-                            <td>2</td> 
+                            <td *ngIf="showBid">0 </td>
                         </tr>
                     </tbody>
+
+                    
                 </table>
             </div>
             <div class="col-md-4">
                 <div class="info-wrapper">
                     <div class="supertop d-flex p-2">
                         <div class="bd-highlight p-0 ml-auto">
-                            <span class="approvedCircle"></span> 12/12/2020 10.40 AM
+                            <span class="approvedCircle"></span> {{selectedIndentRequest.createdAt | date : "dd-MM-y hh:mm" }}
                         </div>
                     </div>
                     <div class="top flex p-2">
@@ -213,18 +197,18 @@
                             <div>
                                 <div class="form-label mb-2">Req. Code</div>
                             </div>
-                            <div class="req-code">101</div>
+                            <div class="req-code">{{selectedIndentRequest.requestId}}</div>
                         </div>
                         <div>
                             <div class="form-label mb-2">Name (Emp Code)</div>
                             <div class="flex">
                                 <span class="avtar"></span>
-                                <span class="bold">Shekhar Surve(7799)</span>
+                                <span class="bold">{{selectedIndentRequest.user.firstName}} {{selectedIndentRequest.user.lastName}}</span>
                             </div>
                         </div>
                         <div>
                             <div class="form-label mb-2">Department</div>
-                            <div class="bold">Account</div>
+                            <div class="bold">{{selectedIndentRequest.department.name}}</div>
                         </div>
                     </div>
                     <div class="bottom flex p-2">
@@ -232,12 +216,12 @@
                             <div class="bd-highlight p-2">
                                 <div>
                                 <div class="form-label mb-2">Reason of Request</div>
-                                <div class="bold">Emergency hiring for temp. basis need to arrange work desk..</div>
+                                <div class="bold">{{selectedIndentRequest.reason}}</div>
                                 </div>
                             </div>
-                            <div class="bd-highlight p-0 ml-auto">
+                            <!-- <div class="bd-highlight p-0 ml-auto">
                                 <i class="fal fa-angle-down"></i>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -247,17 +231,35 @@
             <div class="col-md-3">
                 <div class="modal-info-wrapper">
                     <div class="title p-2">Vendor List</div>
-                    <div class="row no-gutters justify-content-center">
-                        <div class="col-12 col-md-9 pr-1">
-                            <input type="text" class="form-control" placeholder="Search and Add vendor">
+                    <form [formGroup]="chooseVendorforDirectPOForm" class="col-12" (ngSubmit)="chooseVendorforDirectPOFormData()">
+                        <div class="row no-gutters justify-content-center">
+                                <div class="col-10">
+                                    <!-- <input type="text" class="form-control" placeholder="Search and Add vendor"> -->
+                                        <input type="text"
+                                                placeholder="Vendor Name"
+                                                aria-label="Number"
+                                                matInput
+                                                formControlName="name"
+                                                [matAutocomplete]="auto">
+                                        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                                            <mat-option class="is-loading"><mat-spinner diameter="50"></mat-spinner></mat-option>
+                                            <ng-container>
+                                                <mat-option *ngFor="let option of filteredOptions" [value]="option">
+                                                    {{option.name}}
+                                                </mat-option>
+                                            </ng-container>
+                                            
+                                        </mat-autocomplete>
+        
+                                </div>
+                                <div class="col-2">
+                                    <button class="btn btn-sm btn-primary">+</button>
+                                </div>                        
                         </div>
-                        <div class="col-12 col-md-1 pl-1">
-                            <button class="btn btn-sm btn-primary">+</button>
-                        </div>
-                    </div>
+                    </form>
                     <div class="filter-list">
                         <div class="list">
-                            <div class="card-wrapper active">
+                            <div *ngFor="let item of vendorList" (click)="selectItem(item)" [ngClass]="{'active': selectedItem === item}" class="card-wrapper">
                                 <div class="d-flex flex-row bd-highlight">
                                     <div class="bd-highlight p-2">
                                         <div class="d-flex flex-column">
@@ -266,7 +268,7 @@
                                     </div>
                                     <div class="bd-highlight p-0 ml-auto">
                                         <div class="d-flex flex-column">
-                                            <div class="user-small-text p-1"><b>The Ozan IT hub</b></div>
+                                            <div class="user-small-text p-1"><b>{{ item.name }}</b></div>
                                             <div class="p-1">
                                                 <span class="p-1 fa fa-star checked"></span>
                                                 <span class="p-1 fa fa-star checked"></span>
@@ -275,75 +277,18 @@
                                                 <span class="p-1 fa fa-star"></span>
                                             </div>
                                             <div class="user-title-text p-1">
-                                                <img src="./assets/img/phone.png">+ 91 9876765433 
+                                                <img src="./assets/img/phone.png">{{ item.address[0].landline }}
                                             </div>
                                         </div>
                                     </div>
                                     <div class="bd-highlight p-0 ml-auto">
                                         <div class="d-flex flex-column">
-                                            <input type="checkbox">
+                                            <input type="checkbox" [(ngModel)]="item.checked" >
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-wrapper">
-                                <div class="d-flex flex-row bd-highlight">
-                                    <div class="bd-highlight p-2">
-                                        <div class="d-flex flex-column">
-                                            <img class="user-image rounded-circle" src="./assets/img/user.jpg">
-                                        </div>
-                                    </div>
-                                    <div class="bd-highlight p-0 ml-auto">
-                                        <div class="d-flex flex-column">
-                                            <div class="user-small-text p-1"><b>The Ozan IT hub</b></div>
-                                            <div class="p-1">
-                                                <span class="p-1 fa fa-star checked"></span>
-                                                <span class="p-1 fa fa-star checked"></span>
-                                                <span class="p-1 fa fa-star checked"></span>
-                                                <span class="p-1 fa fa-star"></span>
-                                                <span class="p-1 fa fa-star"></span>
-                                            </div>
-                                            <div class="user-title-text p-1">
-                                                <img src="./assets/img/phone.png">+ 91 9876765433 
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="bd-highlight p-0 ml-auto">
-                                        <div class="d-flex flex-column">
-                                            <input type="checkbox">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-wrapper">
-                                <div class="d-flex flex-row bd-highlight">
-                                    <div class="bd-highlight p-2">
-                                        <div class="d-flex flex-column">
-                                            <img class="user-image rounded-circle" src="./assets/img/user.jpg">
-                                        </div>
-                                    </div>
-                                    <div class="bd-highlight p-0 ml-auto">
-                                        <div class="d-flex flex-column">
-                                            <div class="user-small-text p-1"><b>The Ozan IT hub</b></div>
-                                            <div class="p-1">
-                                                <span class="p-1 fa fa-star checked"></span>
-                                                <span class="p-1 fa fa-star checked"></span>
-                                                <span class="p-1 fa fa-star checked"></span>
-                                                <span class="p-1 fa fa-star"></span>
-                                                <span class="p-1 fa fa-star"></span>
-                                            </div>
-                                            <div class="user-title-text p-1">
-                                                <img src="./assets/img/phone.png">+ 91 9876765433 
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="bd-highlight p-0 ml-auto">
-                                        <div class="d-flex flex-column">
-                                            <input type="checkbox">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            
                         </div>
                     </div>
                     <div class="row no-gutters justify-content-center">
@@ -351,14 +296,14 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-9">
+            <div *ngIf="selectedItem" class="col-md-9">
                 <div class="modal-info-wrapper">
                     <section>
                         <div class="container vertical-tabs">
                           <div class="row no-gutters">
                             <div class="col-md-8">
                               <div class="tab-content" id="v-pills-tabContent">
-                                <div class="tab-pane fade" [ngClass]="showValue1" id="v-pills-one" role="tabpanel" aria-labelledby="v-pills-one-tab">
+                                <div class="tab-pane fade" [ngClass]="{'show active' : selectedTabName == 'sellerDetails'}" id="v-pills-one" role="tabpanel" aria-labelledby="v-pills-one-tab">
                                     <div class="row">
                                         <div class="col-md-12 sellerSectionFirst">
                                             <div class="d-flex flex-row bd-highlight">
@@ -370,8 +315,8 @@
                                                 <div class="bd-highlight p-0">
                                                     <div class="d-flex flex-column">
                                                         <div class="user-small-text p-1">
-                                                            <b>The Ozan IT hub</b>
-                                                            <span class="sellerCode">SCR001</span>
+                                                            <b>{{ selectedItem.name }}</b>
+                                                            <span class="sellerCode">{{ selectedItem.id}}</span>
                                                         </div>
                                                         <div class="p-1">
                                                             <span class="p-1 fa fa-star checked"></span>
@@ -381,8 +326,8 @@
                                                             <span class="p-1 fa fa-star"></span>
                                                         </div>
                                                         <div class="p-1">
-                                                            <span class="user-small-text">Area : </span><span class="user-title-text ">500 sq.ft</span> / 
-                                                            <span class="user-small-text">office : </span><span class="user-title-text ">Own</span>
+                                                            <span class="user-small-text">Area : </span><span class="user-title-text ">{{ selectedItem.areaSize}}</span> / 
+                                                            <span class="user-small-text">office : </span><span class="user-title-text ">{{ selectedItem.office}}</span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -415,7 +360,9 @@
                                                     <div class="d-flex">
                                                         <div class="p-2"><img src="./assets/img/location.png"></div>
                                                         <div class="p-2">
-                                                            <span class="user-small-text"> Mahim,<br/>Mumbai,Maharashtra -412034</span>
+                                                            <span class="user-small-text"> {{ selectedItem.address[0].address1 }}, {{ selectedItem.address[0].address2 }}
+                                                                <br/>
+                                                                {{ selectedItem.address[0].city }} ,{{ selectedItem.address[0].name }} -{{ selectedItem.address[0].pincode }}</span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -423,7 +370,7 @@
                                                     <div class="d-flex">
                                                         <div class="p-2"><img src="./assets/img/phone.png"></div>
                                                         <div class="p-2">
-                                                            <span class="user-small-text">+91 9876745445 / +91 8874475655</span>
+                                                            <span class="user-small-text">+91 {{ selectedItem.address[0].mobile }} / +91 {{ selectedItem.address[0].landline }}</span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -463,38 +410,28 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="tab-pane fade" [ngClass]="showValue2" id="v-pills-two" role="tabpanel" aria-labelledby="v-pills-two-tab">
-                                   <table class="table">
+                                <div class="tab-pane fade" [ngClass]="{'show active' : selectedTabName == 'pastPO'}" id="v-pills-two" role="tabpanel" aria-labelledby="v-pills-two-tab">
+                                   <table *ngIf="pastPOData;else loader;" class="table">
                                         <tr>
                                             <th>PO No</th>
                                             <th>Requested By</th>
                                             <th>PO Status</th>
                                             <th>Date</th>
                                         </tr>
-                                        <tr>
-                                            <td>23</td>
-                                            <td>Virendra Patil</td>
-                                            <td>Pending for approval</td>
-                                            <td>Jan 01,2021</td>
+                                        <tr *ngFor="let item of pastPOData">
+                                            <td>{{ item.poNumber }}</td>
+                                            <td>{{ item.preparedBy.firstName }} {{ item.preparedBy.lastName }}</td>
+                                            <td>{{ item.status }}</td>
+                                            <td>{{ item.createdAt | date : "dd-MM-y"}}</td>
                                         </tr>
-                                        <tr>
-                                            <td>24</td>
-                                            <td></td>
-                                            <td>PO closed</td>
-                                            <td>Dec 15,2021</td>
-                                        </tr>
-                                        <tr>
-                                            <td>25</td>
-                                            <td></td>
-                                            <td>PO sent to selller</td>
-                                            <td>Jan 01,2021</td>
-                                        </tr>
+                                       
+                                       
                                    </table>
                                    <div class="d-flex justify-content-end align-items-end">
                                         <div class="p-2 primarytext">View All (10)</div>
                                     </div>
                                 </div>
-                                <div class="tab-pane fade" [ngClass]="showValue3" id="v-pills-three" role="tabpanel" aria-labelledby="v-pills-three-tab">
+                                <div class="tab-pane fade" [ngClass]="{'show active' : selectedTabName == 'pastInv'}" id="v-pills-three" role="tabpanel" aria-labelledby="v-pills-three-tab">
                                     <table class="table">
                                         <tr>
                                             <th>Invoice No</th>
@@ -521,7 +458,7 @@
                                         <div class="p-2 primarytext">View All (10)</div>
                                     </div>
                                 </div>
-                                <div class="tab-pane fade" [ngClass]="showValue4" id="v-pills-four" role="tabpanel" aria-labelledby="v-pills-four-tab">
+                                <div class="tab-pane fade" [ngClass]="{'show active' : selectedTabName == 'pastDel'}" id="v-pills-four" role="tabpanel" aria-labelledby="v-pills-four-tab">
                                     <table class="table">
                                         <tr>
                                             <th>Challan Date</th>
@@ -548,7 +485,7 @@
                                         <div class="p-2 primarytext">View All (10)</div>
                                     </div>
                                 </div>
-                                <div class="tab-pane fade" [ngClass]="showValue5" id="v-pills-five" role="tabpanel" aria-labelledby="v-pills-five-tab">
+                                <div class="tab-pane fade" [ngClass]="{'show active' : selectedTabName == 'prodServ'}" id="v-pills-five" role="tabpanel" aria-labelledby="v-pills-five-tab">
                                     <div class="row no-gutters mb-2">
                                         <div class="col-12 col-md-1 pr-1">
                                             <div class="mt-2">Search</div>
@@ -578,7 +515,7 @@
                                         <div class="p-2 primarytext">View All (10)</div>
                                     </div>
                                 </div>
-                                <div class="tab-pane fade" [ngClass]="showValue6" id="v-pills-six" role="tabpanel" aria-labelledby="v-pills-six-tab">
+                                <div class="tab-pane fade" [ngClass]="{'show active' : selectedTabName == 'onboard'}" id="v-pills-six" role="tabpanel" aria-labelledby="v-pills-six-tab">
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
@@ -638,7 +575,7 @@
                                         <button class="btn btn-primary">Save and Onboard</button>
                                     </div>
                                 </div>
-                                <div class="tab-pane fade" [ngClass]="showValue7" id="v-pills-seven" role="tabpanel" aria-labelledby="v-pills-seven-tab">
+                                <div class="tab-pane fade" [ngClass]="{'show active' : selectedTabName == 'rates'}" id="v-pills-seven" role="tabpanel" aria-labelledby="v-pills-seven-tab">
                                     <div class="row">
                                         <div class="col-md-3">
                                             <div class="info-wrapper text-center p-2">
@@ -711,25 +648,25 @@
                             </div>
                             <div class="col-md-2 offset-md-1">
                                 <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                                    <a class="nav-link cursorPointer" [ngClass]="showActive1" id="v-pills-one-tab" data-toggle="pill" (click)="openTab(1)"  role="tab" aria-controls="v-pills-one" aria-selected="true">
+                                    <a href="javascript:void(0)" class="nav-link cursorPointer" [ngClass]="{'active' : selectedTabName == 'sellerDetails'}" id="v-pills-one-tab" data-toggle="pill" (click)="openTab('sellerDetails')"  role="tab" aria-controls="v-pills-one" aria-selected="true">
                                         <img class="" src="./assets/img/seller-details.png">&nbsp; Seller Details
                                     </a>
-                                    <a class="nav-link cursorPointer" [ngClass]="showActive2" id="v-pills-two-tab" data-toggle="pill"  (click)="openTab(2)" role="tab" aria-controls="v-pills-two" aria-selected="false">
+                                    <a href="javascript:void(0)" class="nav-link cursorPointer" [ngClass]="{'active' : selectedTabName == 'pastPO'}" id="v-pills-two-tab" data-toggle="pill"  (click)="openTab('pastPO')" role="tab" aria-controls="v-pills-two" aria-selected="false">
                                         <img class="" src="./assets/img/past-po.png">&nbsp; Past PO
                                     </a>
-                                    <a class="nav-link cursorPointer" [ngClass]="showActive3" id="v-pills-three-tab" data-toggle="pill" (click)="openTab(3)"  role="tab" aria-controls="v-pills-three" aria-selected="false">
+                                    <a href="javascript:void(0)" class="nav-link cursorPointer" [ngClass]="{'active' : selectedTabName == 'pastInv'}" id="v-pills-three-tab" data-toggle="pill" (click)="openTab('pastInv')"  role="tab" aria-controls="v-pills-three" aria-selected="false">
                                         <img class="" src="./assets/img/past-invoice.png">&nbsp; Past Invoices
                                     </a>
-                                    <a class="nav-link cursorPointer" [ngClass]="showActive4" id="v-pills-three-tab" data-toggle="pill" (click)="openTab(4)"  role="tab" aria-controls="v-pills-three" aria-selected="false">
+                                    <a href="javascript:void(0)" class="nav-link cursorPointer" [ngClass]="{'active' : selectedTabName == 'pastDel'}" id="v-pills-three-tab" data-toggle="pill" (click)="openTab('pastDel')"  role="tab" aria-controls="v-pills-three" aria-selected="false">
                                         <img class="" src="./assets/img/past-deliveries.png">&nbsp; Past Deliveries
                                     </a>
-                                    <a class="nav-link cursorPointer" [ngClass]="showActive5" id="v-pills-three-tab" data-toggle="pill" (click)="openTab(5)"  role="tab" aria-controls="v-pills-three" aria-selected="false">
+                                    <a href="javascript:void(0)" class="nav-link cursorPointer" [ngClass]="{'active' : selectedTabName == 'prodServ'}" id="v-pills-three-tab" data-toggle="pill" (click)="openTab('prodServ')"  role="tab" aria-controls="v-pills-three" aria-selected="false">
                                         <img class="" src="./assets/img/products-services.png">&nbsp; Products & Services
                                     </a>
-                                    <a class="nav-link cursorPointer" [ngClass]="showActive6" id="v-pills-three-tab" data-toggle="pill" (click)="openTab(6)"  role="tab" aria-controls="v-pills-three" aria-selected="false">
+                                    <a href="javascript:void(0)" class="nav-link cursorPointer" [ngClass]="{'active' : selectedTabName == 'onboard'}" id="v-pills-three-tab" data-toggle="pill" (click)="openTab('onboard')"  role="tab" aria-controls="v-pills-three" aria-selected="false">
                                         <img class="" src="./assets/img/onboard-vendor.png">&nbsp; Onboard Vendor
                                     </a>
-                                    <a class="nav-link cursorPointer" [ngClass]="showActive7" id="v-pills-three-tab" data-toggle="pill" (click)="openTab(7)"  role="tab" aria-controls="v-pills-three" aria-selected="false">
+                                    <a href="javascript:void(0)" class="nav-link cursorPointer" [ngClass]="{'active' : selectedTabName == 'rates'}" id="v-pills-three-tab" data-toggle="pill" (click)="openTab('rates')"  role="tab" aria-controls="v-pills-three" aria-selected="false">
                                         <img class="" src="./assets/img/rates-given.png">&nbsp; Rates Given
                                     </a>
                                 </div>
@@ -738,13 +675,15 @@
                         </div>
                     </section>
                 </div>
-                <div class="row mt-2">
+                <div class="row mt-2" style="position: relative;">
                     <div class="col-md-6">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="form-label">Select Delivery Address<span class="StarChecked">*</span> </label>
-                                    <select class="form-control"><option>Head Office</option></select>
+                                    <select class="form-control" [(ngModel)]="deliveryAddress">
+                                        <option [value]="item._id" *ngFor="let item of addressDetails">{{ item.type }}</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -758,8 +697,8 @@
                                             </div>
                                         </div>
                                         <div class="body-text">
-                                            Malad(west)<br>
-                                            Mumbai Maharashtra 42322
+                                            {{ headOfficeLocation.address1 }}, {{ headOfficeLocation.address2 }}(west)<br>
+                                            {{ headOfficeLocation.city }}, {{ headOfficeLocation.name }}, {{ headOfficeLocation.pincode }}
                                         </div>
                                     </div>
                                 </div>
@@ -769,7 +708,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label class="form-label">Message to seller</label>
-                                    <textarea class="form-control" rows="3">New Joinee</textarea>
+                                    <textarea class="form-control" rows="3" [(ngModel)]="messageToSeller"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -778,7 +717,7 @@
                         <div class="d-flex flex-row bd-highlight">
                             <div class="bd-highlight chip p-2"><label class="form-label">Attachments</label></div>
                             <div class="bd-highlight p-0 ml-auto">
-                                <button class="btn btn-outline-primary" (click)="openFileModal()"><img src="./assets/img/upload.png">&nbsp;Upload</button>
+                                <button class="btn btn-outline-primary" (click)="showAttachementModal = true"><img src="./assets/img/upload.png">&nbsp;Upload</button>
                             </div>
                         </div>
                         <div class="filter-listNew">
@@ -831,91 +770,75 @@
                             <div><span class="primarytext ml-2"> 2+ More</span></div>
                         </div>
                     </div>
+
+                    <div *ngIf="showAttachementModal" class="attachment-info-wrapper">
+                        <div class="info-heading">
+                            <b>Attachments</b>
+
+                            <button (click)="showAttachementModal = false" type="button" class="close" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <hr style="margin-top: 0.5rem; margin-bottom: 0.5rem;"/>
+                        <div class="info-body">
+                            <div class="d-flex flex-row bd-highlight" style="padding: 10px;">
+                                <div class="bd-highlight p-0">
+                                    <div class="d-flex flex-column">
+                                       <input type="checkbox">
+                                    </div>
+                                </div>
+                                <div class="bd-highlight p-0">
+                                    <div class="d-flex flex-column">
+                                        <div class="user-small-text pl-2">
+                                            <b>File name & label</b>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bd-highlight p-0 ml-auto">
+                                    <div class="d-flex flex-column">
+                                        <img src="./assets/img/delete.png">
+                                    </div>
+                                </div>
+                            </div>
+                            <hr style="margin-top: 0.5rem; margin-bottom: 0.5rem;"/>
+                            <div class="d-flex flex-row bd-highlight" style="padding: 10px;">
+                                <div class="bd-highlight pt-2">
+                                    <div class="d-flex flex-column">
+                                       <input type="checkbox">
+                                    </div>
+                                </div>
+                                <div class="bd-highlight pl-2 pt-1">
+                                    <div class="d-flex flex-column">
+                                        <img height="20px" src="./assets/img/attachments-file.png">
+                                    </div>
+                                </div>
+                                <div class="bd-highlight pl-2 pt-1">
+                                    <div class="d-flex flex-column">
+                                        <div class="user-small-text p-1">
+                                            <b>Product_items_info.pdf</b>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bd-highlight">
+                                    <div class="d-flex flex-column">
+                                        <input type="text" class="form-control" placeholder="order product info">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <hr style="margin-top: 0.5rem; margin-bottom: 0.5rem;"/>
+                        <div class="info-footer">
+                           <button class="btn btn-outline-primary"><img height="20px" src="./assets/img/attachments-file.png">&nbsp;Upload</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </modal-content>
     <modal-footer>
         <button class="btn btn-outline-secondary" (click)="closeModal()">Close</button>&nbsp;
-        <button class="btn btn-primary">Send To Vendors</button>
+        <button class="btn btn-primary" (click)="sendToVendors()">Send To Vendors</button>
     </modal-footer>
 </modal>
 
-<modal class="info-wrapper" #fileModal style="bottom: 25px;right: 140px; margin: 0px;">
-    <modal-header style="background-color: #f1f9fc;">
-        <b>Attach File</b>
-    </modal-header>
-    <modal-content style="background-color: #f1f9fc;">
-        <div class="d-flex flex-row bd-highlight">
-            <div class="bd-highlight p-2">
-                <div class="d-flex flex-column">
-                   <input type="checkbox">
-                </div>
-            </div>
-            <div class="bd-highlight p-0">
-                <div class="d-flex flex-column">
-                    <div class="user-small-text p-1">
-                        <b>File name & label</b>
-                    </div>
-                </div>
-            </div>
-            <div class="bd-highlight p-0 ml-auto">
-                <div class="d-flex flex-column">
-                    <img src="./assets/img/delete.png">
-                </div>
-            </div>
-        </div>
-        <hr style="margin-top: 0.5rem; margin-bottom: 0.5rem;"/>
-        <div class="d-flex flex-row bd-highlight">
-            <div class="bd-highlight p-2">
-                <div class="d-flex flex-column">
-                   <input type="checkbox">
-                </div>
-            </div>
-            <div class="bd-highlight p-2">
-                <div class="d-flex flex-column">
-                    <img height="20px" src="./assets/img/attachments-file.png">
-                </div>
-            </div>
-            <div class="bd-highlight p-0">
-                <div class="d-flex flex-column">
-                    <div class="user-small-text p-1">
-                        <b>Product_items_info.pdf</b>
-                    </div>
-                </div>
-            </div>
-            <div class="bd-highlight p-0 ml-auto">
-                <div class="d-flex flex-column">
-                    <input type="text" class="form-control" placeholder="order product info">
-                </div>
-            </div>
-        </div>
-        <div class="d-flex flex-row bd-highlight">
-            <div class="bd-highlight p-2">
-                <div class="d-flex flex-column">
-                   <input type="checkbox">
-                </div>
-            </div>
-            <div class="bd-highlight p-2">
-                <div class="d-flex flex-column">
-                    <img height="20px" src="./assets/img/attachments-file.png">
-                </div>
-            </div>
-            <div class="bd-highlight p-0">
-                <div class="d-flex flex-column">
-                    <div class="user-small-text p-1">
-                        <b>Product_items_info.pdf</b>
-                    </div>
-                </div>
-            </div>
-            <div class="bd-highlight p-0 ml-auto">
-                <div class="d-flex flex-column">
-                    <input type="text" class="form-control" placeholder="server details">
-                </div>
-            </div>
-        </div>
-    </modal-content>
-    <modal-footer style="background-color: #f1f9fc;">
-       <button class="btn btn-outline-primary"><img height="20px" src="./assets/img/attachments-file.png">&nbsp;Attach File</button>
-    </modal-footer>
-</modal>

@@ -13,7 +13,10 @@ const getCompanyURL = environment.apiurl + "/company/read/";
 const getDepartmentURL = environment.apiurl + "/department/search/";
 const createIndentURL = environment.apiurl + "/indent-request/create";
 const rejectIndentRequestURL = environment.apiurl + "/indent-request/reject-indent";
-
+const searchVendorByProductURL = environment.apiurl + "/empanelment/get-product-seller";
+const searchSellerURL = environment.apiurl + "/empanelment/get-seller";
+const sendToVendorsURL = environment.apiurl + "/request-seller/create";
+const getPastPOURL = environment.apiurl + "/po/search";
 @Injectable() 
 export class RequestDetailsService {
     constructor(private http: HttpClient) {}
@@ -82,5 +85,25 @@ export class RequestDetailsService {
     createNewIndent(indObj) {
         this.setAccessToken();
         return this.http.post(createIndentURL, indObj, {headers: this.httpHeaders});
+    }
+
+    getVendorByProductDetails(obj) {
+        this.setAccessToken();
+        return this.http.post(searchVendorByProductURL, obj, {headers: this.httpHeaders});
+    }
+
+    getMyVendorList(empObj) {
+        this.setAccessToken();
+        return this.http.post(searchSellerURL, empObj, {headers: this.httpHeaders});
+    }
+
+    sendToVendors(indObj) {
+        this.setAccessToken();
+        return this.http.post(sendToVendorsURL, indObj, {headers: this.httpHeaders});
+    }
+
+    getPastPO(indObj) {
+        this.setAccessToken();
+        return this.http.post(getPastPOURL, indObj, {headers: this.httpHeaders});
     }
 }

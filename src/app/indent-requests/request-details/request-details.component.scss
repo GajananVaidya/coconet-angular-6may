@@ -131,6 +131,7 @@
 .comment-form {
     box-shadow: 0px 0px 10px #ddd;
     padding: 15px;
+    justify-content: center;
     .status-block {
         border: 1px solid #a3afbf;
         padding: 10px;
@@ -185,6 +186,11 @@
     border-radius: 5px;
     padding: 5px;
 }
+.attachment-info-wrapper { width: 417px; position: absolute; right: 3px; bottom: -14px; background-color: #f1f9fc;  border: 1px solid #dae9f0;
+    border-radius: 5px;}
+.info-heading { background-color: #f1f9fc; padding: 10px; font-size: 15px; }
+.info-body { background-color: #f1f9fc; }
+.info-footer { background-color: #f1f9fc; padding: 10px; text-align: right; }
 .user-image{  height: 30px; width: 30px; }
 .checked { color: orange;  }
 .StarChecked { color: red;  }

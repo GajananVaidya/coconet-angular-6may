@@ -225,3 +225,5 @@ input[type="date"] {
 }
 
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
+.cdk-overlay-container { z-index: 99999!important; }
